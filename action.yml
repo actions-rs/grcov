@@ -1,0 +1,19 @@
+name: 'rust-grcov'
+description: 'Collect and aggregate code coverage information with the Mozilla grcov tool'
+author: 'actions-rs team'
+branding:
+  icon: play-circle
+  color: black
+inputs:
+  config:
+    description: Path to the configuration file (optional, relative to the repository root)
+    required: false
+    default: .github/actions-rs/grcov.yml
+
+outputs:
+  report:
+    description: Absolute path to the generated code coverage file
+
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
