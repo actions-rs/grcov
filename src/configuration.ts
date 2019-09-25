@@ -7,6 +7,7 @@ import stringArgv from 'string-argv';
 import * as core from '@actions/core';
 import {input} from '@actions-rs/core';
 
+const DEFAULT_CONFIG_PATH = '.github/actions-rs/grcov.yml';
 
 /**
  * These value are defined by the Action inputs
@@ -78,8 +79,13 @@ Did you forgot to checkout the code first?');
     if (relConfigPath.length > 0) {
         inputs.configPath = path.join(
             process.env.GITHUB_WORKSPACE!,
-            relConfigPath
+            relConfigPath,
         );
+    } else {
+        inputs.configPath = path.join(
+            process.env.GITHUB_WORKSPACE!,
+            DEFAULT_CONFIG_PATH,
+        )
     }
 
     return inputs;
@@ -119,7 +125,7 @@ async function loadUser(path: string): Promise<User> {
         user.prefixDir = contents['prefix-dir'];
     }
 
-    core.debug(`Parsed grcov configuration: ${user}`);
+    core.debug(`User configuration: ${JSON.stringify(user)}`);
 
     return user;
 }
