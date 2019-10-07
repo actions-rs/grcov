@@ -134,7 +134,7 @@ filter: covered
 output-type: lcov
 output-file: ./lcov.info
 prefix-dir: /home/user/build/
-ignore-dir:
+ignore:
   - "/*"
   - "C:/*"
   - "../*"
