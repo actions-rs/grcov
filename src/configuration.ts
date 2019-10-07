@@ -27,7 +27,7 @@ export interface User {
     ignoreNotExisting?: boolean,
     llvm?: boolean,
     filter?: 'covered' | 'uncovered',
-    ignoreDir?: string[],
+    ignore?: string[],
     outputType?: 'lcov' | 'coveralls' | 'coveralls+' | 'ade' | 'files',
     pathMapping?: string[],
     prefixDir?: string,
@@ -113,8 +113,8 @@ async function loadUser(path: string): Promise<User> {
     if (contents['filter']) {
         user.filter = contents['filter'];
     }
-    if (contents['ignore-dir'] && Array.isArray(contents['ignore-dir'])) {
-        user.ignoreDir = contents['ignore-dir'];
+    if (contents['ignore'] && Array.isArray(contents['ignore'])) {
+        user.ignore = contents['ignore'];
     }
     if (contents['output-type']) {
         user.outputType = contents['output-type'];
