@@ -84,9 +84,9 @@ export class Grcov {
             args.push(config.user.filter);
         }
 
-        if (config.user.ignoreDir) {
-            for (const dir of config.user.ignoreDir) {
-                args.push('--ignore-dir');
+        if (config.user.ignore) {
+            for (const dir of config.user.ignore) {
+                args.push('--ignore');
                 args.push(dir);
             }
         }
