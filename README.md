@@ -148,3 +148,10 @@ path-mapping:
 1. [Coveralls](https://github.com/marketplace/actions/coveralls-github-action) Action is expecting `LCOV` format,
     do not use the `coveralls` or `coveralls+` output type for the `grcov`.\
     Instead, set the `output-type` config value to `lcov`.
+
+2. Generated report file is stored in the temporary directory by default,
+    which might not be accessible by the Docker-based Actions,
+    such as [codecov](https://github.com/marketplace/actions/codecov).\
+    Consider either mount it as [a Docker volume](https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idcontainervolumes)
+    or use the `output-file` option in the [config](#config)
+    to store report in the path accessible by container.
