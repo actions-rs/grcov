@@ -29,7 +29,7 @@
         "url": "https://github.com/actions-rs/grcov/issues"
     },
     "dependencies": {
-        "@actions-rs/core": "^0.0.4",
+        "@actions-rs/core": "^0.0.5",
         "@actions/core": "^1.1.1",
         "@actions/exec": "^1.0.1",
         "@actions/io": "^1.0.1",
