@@ -1,6 +1,6 @@
 {
     "name": "rust-grcov",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "private": false,
     "description": "Collect and aggregate code coverage information with the Mozilla grcov tool",
     "main": "lib/main.js",

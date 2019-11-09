@@ -97,7 +97,7 @@ async function loadUser(path: string): Promise<User> {
     try {
         contents = yaml.safeLoad(await fs.readFile(path));
     } catch (error) {
-        core.warning(`Unable to load grcov config from the ${path}, falling back to defaults. ${error}`);
+        core.info(`Unable to load grcov config from the ${path}, falling back to defaults. ${error}`);
     }
 
     let user: User = {};
