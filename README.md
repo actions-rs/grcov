@@ -28,8 +28,8 @@ jobs:
           command: test
           args: --all-features --no-fail-fast
         env:
-          'CARGO_INCREMENTAL': '0'
-          'RUSTFLAGS': '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Zno-landing-pads'
+          CARGO_INCREMENTAL: '0'
+          RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Zno-landing-pads'
       - uses: actions-rs/grcov@v0.1
 ```
 
@@ -68,8 +68,8 @@ jobs:
         command: test
         args: --all-features --no-fail-fast  # Customize args for your own needs
       env:
-        'CARGO_INCREMENTAL': '0'
-        'RUSTFLAGS': '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Zno-landing-pads'    
+        CARGO_INCREMENTAL: '0'
+        RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Zno-landing-pads'    
     ```
 
     Note that `-Clink-dead-code` flag might be broken for macOS environments,
