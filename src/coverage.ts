@@ -43,7 +43,7 @@ async function getCoverageFiles(root: string): Promise<string[]> {
     let patterns: string[] = [];
     for (const crate of crates) {
         const replacement = crate.replace('-', '_');
-        patterns.push(`**/${replacement}-*.gc*`);
+        patterns.push(`**/${replacement}*.gc*`);
     }
 
     return glob.sync(patterns, {
