@@ -1,6 +1,6 @@
 {
     "name": "rust-grcov",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "private": false,
     "description": "Collect and aggregate code coverage information with the Mozilla grcov tool",
     "main": "lib/main.js",
@@ -30,22 +30,23 @@
     },
     "dependencies": {
         "@actions-rs/core": "^0.0.8",
-        "@actions/core": "^1.1.1",
-        "@actions/exec": "^1.0.1",
-        "@actions/io": "^1.0.1",
+        "@actions/core": "^1.2.2",
+        "@actions/exec": "^1.0.3",
+        "@actions/io": "^1.0.2",
         "@iarna/toml": "^2.2.3",
         "archiver": "^3.1.1",
         "fast-glob": "^3.1.1",
         "js-yaml": "^3.13.1",
+        "npm-check-updates": "^4.0.1",
         "string-argv": "^0.3.1"
     },
     "devDependencies": {
-        "@types/jest": "^24.0.23",
-        "@types/node": "^12.12.14",
-        "@zeit/ncc": "^0.20.5",
-        "jest": "^24.9.0",
-        "jest-circus": "^24.9.0",
-        "ts-jest": "^24.2.0",
-        "typescript": "^3.7.2"
+        "@types/jest": "^25.1.1",
+        "@types/node": "^13.7.0",
+        "@zeit/ncc": "^0.21.0",
+        "jest": "^25.1.0",
+        "jest-circus": "^25.1.0",
+        "ts-jest": "^25.2.0",
+        "typescript": "^3.7.5"
     }
 }
