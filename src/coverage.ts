@@ -33,6 +33,15 @@ async function getCrateNames(root: string): Promise<string[]> {
         }
     }
 
+    const cargoTomlContents = await fsPromises.readFile(path.join(root, 'Cargo.toml'));
+    const cargo = toml.parse(cargoTomlContents);
+
+    for (const bins of (cargo['bin'] || [])) {
+      if (bins.name) {
+        crates.push(bins.name)
+      }
+    }
+
     return crates;
 }
 
