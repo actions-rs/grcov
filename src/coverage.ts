@@ -11,7 +11,7 @@ import * as core from '@actions/core';
 
 async function getNamedBins(root: string): Promise<string[]> {
     let cargoFiles = glob.sync("**/Cargo.toml", {
-        cwd: path.join(root, 'target'),
+        cwd: root,
         absolute: true,
         onlyFiles: true,
     });
