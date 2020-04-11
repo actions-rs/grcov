@@ -19,7 +19,7 @@ async function getNamedBins(root: string): Promise<string[]> {
 
 
     let bins: string[] = [];
-    for (const file in cargoFiles) {
+    for (const file of cargoFiles) {
       const cargoTomlContents = await fsPromises.readFile(path.join(root, file));
       const cargo = toml.parse(cargoTomlContents);
 
