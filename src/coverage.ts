@@ -15,11 +15,12 @@ async function getNamedBins(root: string): Promise<string[]> {
         absolute: true,
         onlyFiles: true,
     });
+    core.info(`considering: ${cargoFiles}`);
 
 
     let bins: string[] = [];
     for (const file in cargoFiles) {
-      const cargoTomlContents = await fsPromises.readFile(file);
+      const cargoTomlContents = await fsPromises.readFile(path.join(root, file));
       const cargo = toml.parse(cargoTomlContents);
 
       for (const bin of (cargo['bin'] || [])) {
