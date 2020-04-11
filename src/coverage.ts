@@ -9,6 +9,29 @@ const toml = require('@iarna/toml');
 
 import * as core from '@actions/core';
 
+async function getNamedBins(root: string): Promise<string[]> {
+    let cargoFiles = glob.sync("**/Cargo.toml", {
+        cwd: path.join(root, 'target'),
+        absolute: true,
+        onlyFiles: true,
+    });
+
+
+    let bins: string[] = [];
+    for (const file in cargoFiles) {
+      const cargoTomlContents = await fsPromises.readFile(file);
+      const cargo = toml.parse(cargoTomlContents);
+
+      for (const bin of (cargo['bin'] || [])) {
+        if (bin.name) {
+          bins.push(bin.name)
+        }
+      }
+    }
+
+    return bins
+}
+
 /**
  * Find all crate names for this one project.
  *
@@ -33,16 +56,9 @@ async function getCrateNames(root: string): Promise<string[]> {
         }
     }
 
-    const cargoTomlContents = await fsPromises.readFile(path.join(root, 'Cargo.toml'));
-    const cargo = toml.parse(cargoTomlContents);
+    let bins: string[] = await getNamedBins(root);
 
-    for (const bins of (cargo['bin'] || [])) {
-      if (bins.name) {
-        crates.push(bins.name)
-      }
-    }
-
-    return crates;
+    return crates.concat(bins);
 }
 
 async function getCoverageFiles(root: string): Promise<string[]> {
