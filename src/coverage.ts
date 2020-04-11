@@ -28,7 +28,7 @@ async function getNamedBins(root: string): Promise<string[]> {
         }
       }
     }
-
+    core.info(`bins found: ${bins}`);
     return bins
 }
 
