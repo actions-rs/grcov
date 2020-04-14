@@ -9,9 +9,11 @@
         "test": "__tests__"
     },
     "scripts": {
-        "build": "ncc build src/main.ts --minify",
-        "watch": "ncc build src/main.ts --watch",
-        "test": "jest"
+        "build": "rm -rf ./dist/* && ncc build src/main.ts --minify",
+        "format": "prettier --write 'src/**/*.ts' '__tests__/**/*.ts'",
+        "lint": "tsc --noEmit && eslint 'src/**/*.ts' '__tests__/**/*.ts'",
+        "watch": "rm -rf ./dist/* && ncc build src/main.ts --watch",
+        "test": "jest -c jest.config.json"
     },
     "repository": {
         "type": "git",
@@ -33,19 +35,22 @@
         "@actions/core": "^1.2.3",
         "@actions/exec": "^1.0.3",
         "@actions/io": "^1.0.2",
-        "@iarna/toml": "^2.2.3",
-        "archiver": "^3.1.1",
-        "fast-glob": "^3.2.2",
-        "js-yaml": "^3.13.1",
-        "npm-check-updates": "^4.1.2",
         "string-argv": "^0.3.1"
     },
     "devDependencies": {
         "@types/jest": "^25.2.1",
         "@types/node": "^13.11.1",
+        "@typescript-eslint/eslint-plugin": "^2.27.0",
+        "@typescript-eslint/parser": "^2.27.0",
         "@zeit/ncc": "^0.22.1",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-plugin-prettier": "^3.1.2",
         "jest": "^25.3.0",
         "jest-circus": "^25.3.0",
+        "mock-env": "^0.2.0",
+        "npm-check-updates": "^4.1.2",
+        "prettier": "^2.0.4",
         "ts-jest": "^25.3.1",
         "typescript": "^3.8.3"
     }

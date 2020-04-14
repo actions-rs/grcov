@@ -1,27 +1,32 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
         "allowJs": false,
-        "outDir": "./lib",
-        "rootDir": "./src",
-        "removeComments": true,
-        "strict": true,
-        "noImplicitAny": false,
-        "strictNullChecks": true,
-        "strictFunctionTypes": true,
-        "strictBindCallApply": true,
-        "strictPropertyInitialization": true,
+        "checkJs": false,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "newLine": "LF",
+        "noEmitOnError": true,
+        "noErrorTruncation": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
         "noImplicitThis": true,
-        "alwaysStrict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "esModuleInterop": true
+        "outDir": "dist",
+        "pretty": true,
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "strict": true,
+        "suppressImplicitAnyIndexErrors": false,
+        "target": "es2018",
+        "declaration": false,
+        "sourceMap": false,
+        "typeRoots": ["./types", "./node_modules/@types"]
     },
-    "exclude": [
-        "node_modules",
-        "**/*.test.ts"
+    "include": [
+        "src/**/*.ts"
     ]
 }

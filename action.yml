@@ -5,10 +5,9 @@ branding:
   icon: play-circle
   color: black
 inputs:
-  config:
-    description: Path to the configuration file (optional, relative to the repository root)
+  args:
+    description: Arguments for the grcov command
     required: false
-    default: .github/actions-rs/grcov.yml
 
 outputs:
   report:

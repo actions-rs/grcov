@@ -1,27 +1,18 @@
-import * as core from '@actions/core';
+import * as core from "@actions/core";
 
-import * as grcov from './grcov';
-import * as configuration from './configuration';
-import * as coverage from './coverage';
+import * as grcov from "./grcov";
+import * as args from "./args";
 
-async function run() {
-    const config = await configuration.load();
-
-    let coverageArchive;
-    try {
-        core.startGroup('Searching for coverage files');
-        coverageArchive = await coverage.prepareArchive(config.system.workspace);
-    } finally {
-        core.endGroup();
-    }
+async function run(): Promise<void> {
+    const config = args.getConfig();
 
     const exe = await grcov.Grcov.get();
-    const outputPath = await exe.call(config, coverageArchive);
+    await exe.call(config.args);
 
-    core.setOutput('report', outputPath);
+    core.setOutput("report", config.outputPath);
 }
 
-async function main() {
+async function main(): Promise<void> {
     try {
         await run();
     } catch (error) {
