@@ -111,6 +111,7 @@ export function getConfig(): Configuration {
     // was not provided by caller, replacing it with
     if (outputFile === undefined) {
         outputFile = getResultPath(outputType);
+
         core.info(
             `--output-file parameter is missing, coverage data will be stored at ${outputFile}`
         );
@@ -118,16 +119,28 @@ export function getConfig(): Configuration {
     }
 
     if (missing.commitSha) {
-        args.unshift("--commit-sha", getEnv("GITHUB_SHA"));
+        const sha = getEnv("GITHUB_SHA");
+
+        core.info(`--commit-sha parameter is missing, set to ${sha}`);
+        args.unshift("--commit-sha", sha);
     }
     if (missing.serviceName) {
-        args.unshift("--service-name", getEnv("GITHUB_WORKFLOW"));
+        const workflow = getEnv("GITHUB_WORKFLOW");
+
+        core.info(`--service-name parameter is missing, set to ${workflow}`);
+        args.unshift("--service-name", workflow);
     }
     if (missing.serviceJobId) {
-        args.unshift("--service-job-id", getEnv("GITHUB_RUN_ID"));
+        const jobId = getEnv("GITHUB_RUN_ID");
+
+        core.info(`--service-job-id parameter is missing, set to ${jobId}`);
+        args.unshift("--service-job-id", jobId);
     }
     if (missing.sourceDir) {
-        args.unshift("--source-dir", getEnv("GITHUB_WORKSPACE"));
+        const workspace = getEnv("GITHUB_WORKSPACE");
+
+        core.info(`--source-dir parameter is missing, set to ${workspace}`);
+        args.unshift("--source-dir", workspace);
     }
 
     return {
