@@ -13,7 +13,7 @@
         "format": "prettier --write 'src/**/*.ts' '__tests__/**/*.ts'",
         "lint": "tsc --noEmit && eslint 'src/**/*.ts' '__tests__/**/*.ts'",
         "watch": "rm -rf ./dist/* && ncc build src/main.ts --watch",
-        "test": "jest -c jest.config.json"
+        "test": "jest -c jest.config.json --passWithNoTests"
     },
     "repository": {
         "type": "git",
