@@ -69,7 +69,7 @@ jobs:
         args: --all-features --no-fail-fast  # Customize args for your own needs
       env:
         CARGO_INCREMENTAL: '0'
-        RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Zno-landing-pads'    
+        RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
     ```
 
     Note that `-Clink-dead-code` flag might be broken for macOS environments,
