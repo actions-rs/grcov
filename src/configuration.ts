@@ -127,6 +127,9 @@ async function loadUser(path: string): Promise<User> {
     }
     if (contents['output-path']) {
         user.outputPath = contents['output-path'];
+    } else if (contents['output-file']) {
+        console.warn("Configuration option `output-file` is deprecated; please replace it with `output-path`.\nFor more information, see https://github.com/actions-rs/grcov/issues/70.");
+        user.outputPath = contents['output-file'];
     }
 
     core.debug(`User configuration: ${JSON.stringify(user)}`);
