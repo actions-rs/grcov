@@ -98,7 +98,7 @@ export class Grcov {
             }
         }
 
-        args.push('--output-file');
+        args.push('--output-path');
         args.push(toFile);
 
         if (config.user.outputType) {
