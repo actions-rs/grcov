@@ -31,7 +31,7 @@ export interface User {
     outputType?: 'lcov' | 'coveralls' | 'coveralls+' | 'ade' | 'files',
     pathMapping?: string[],
     prefixDir?: string,
-    outputFile?: string,
+    outputPath?: string,
 }
 
 /**
@@ -125,8 +125,8 @@ async function loadUser(path: string): Promise<User> {
     if (contents['prefix-dir']) {
         user.prefixDir = contents['prefix-dir'];
     }
-    if (contents['output-file']) {
-        user.outputFile = contents['output-file'];
+    if (contents['output-path']) {
+        user.outputPath = contents['output-path'];
     }
 
     core.debug(`User configuration: ${JSON.stringify(user)}`);

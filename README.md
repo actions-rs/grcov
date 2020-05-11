@@ -132,7 +132,7 @@ ignore-not-existing: true
 llvm: true
 filter: covered
 output-type: lcov
-output-file: ./lcov.info
+output-path: ./lcov.info
 prefix-dir: /home/user/build/
 ignore:
   - "/*"
@@ -153,5 +153,5 @@ path-mapping:
     which might not be accessible by the Docker-based Actions,
     such as [codecov](https://github.com/marketplace/actions/codecov).\
     Consider either mount it as [a Docker volume](https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idcontainervolumes)
-    or use the `output-file` option in the [config](#config)
+    or use the `output-path` option in the [config](#config)
     to store report in the path accessible by container.

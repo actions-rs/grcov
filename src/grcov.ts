@@ -40,7 +40,7 @@ export class Grcov {
 
     public async call(config: configuration.Config, archive: string): Promise<string> {
 	    const postfix = Math.random().toString(36).substring(2, 15)
-        const reportPath = config.user.outputFile ? path.resolve(config.user.outputFile) : path.join(os.tmpdir(), `grcov-report-${postfix}`);
+        const reportPath = config.user.outputPath ? path.resolve(config.user.outputPath) : path.join(os.tmpdir(), `grcov-report-${postfix}`);
 
         const args = this.buildArgs(config, archive, reportPath);
 
