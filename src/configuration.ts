@@ -31,7 +31,7 @@ export interface User {
     outputType?: 'lcov' | 'coveralls' | 'coveralls+' | 'ade' | 'files',
     pathMapping?: string[],
     prefixDir?: string,
-    outputFile?: string,
+    outputPath?: string,
 }
 
 /**
@@ -125,8 +125,11 @@ async function loadUser(path: string): Promise<User> {
     if (contents['prefix-dir']) {
         user.prefixDir = contents['prefix-dir'];
     }
-    if (contents['output-file']) {
-        user.outputFile = contents['output-file'];
+    if (contents['output-path']) {
+        user.outputPath = contents['output-path'];
+    } else if (contents['output-file']) {
+        console.warn("Configuration option `output-file` is deprecated; please replace it with `output-path`.\nFor more information, see https://github.com/actions-rs/grcov/issues/70.");
+        user.outputPath = contents['output-file'];
     }
 
     core.debug(`User configuration: ${JSON.stringify(user)}`);
