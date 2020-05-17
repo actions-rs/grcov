@@ -132,7 +132,7 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ${{ steps.coverage.outputs.report }}
+        path-to-lcov: ${{ steps.coverage.outputs.output-path }}
     ```
 
 ## Inputs
