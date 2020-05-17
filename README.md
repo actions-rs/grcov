@@ -10,6 +10,8 @@
 This GitHub Action collects and aggregates code coverage data with the
 [grcov](https://github.com/mozilla/grcov) tool.
 
+**NOTE: This branch (`0.2-proto`) is experimental. Use it at your own risk!
+
 **Table of Contents**
 
 * [Example workflow](#example-workflow)
@@ -40,11 +42,23 @@ jobs:
           command: test
           args: --all-features --no-fail-fast
         env:
-          CARGO_INCREMENTAL: '0'
-          RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Zno-landing-pads'
-      - uses: actions-rs/grcov@v0.2
+          CARGO_INCREMENTAL: "0"
+          RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
+          RUSTDOCFLAGS: "-Cpanic=abort"
+
+      # TODO: This step is temporary using `0.2-proto` version!
+      # After the proper `v0.2` release, `0.2-proto` version will be removed
+      # and it will break your CI; you should understand that before copying it.
+      - uses: actions-rs/grcov@0.2-proto
         with:
-          args: --llvm ./target/debug/
+          args: >
+            -t lcov
+            --llvm
+            --branch
+            --ignore-not-existing
+            --ignore "/*"
+            -o ./target/lcov.info
+            ./target/debug/
 ```
 
 ## Usage
@@ -57,6 +71,7 @@ jobs:
     - uses: actions-rs/toolchain@v1
       with:
         toolchain: nightly
+        profile: minimal
         override: true
     ```
 
@@ -65,9 +80,7 @@ jobs:
     or other similar commands were executed already in this workspace.
 
     ```yaml
-    - uses: actions-rs/cargo@v1
-      with:
-        command: clean
+    - run: cargo clean
     ```
 
 3. Execute the `cargo test` command.
@@ -75,37 +88,39 @@ jobs:
     for this command, see [grcov](https://github.com/mozilla/grcov) page for details.
 
     ```yaml
-    - uses: actions-rs/cargo@v1
-      with:
-        command: test
-        args: --all-features --no-fail-fast  # Customize args for your own needs
+    - run: cargo test --all-features --no-fail-fast  # Customize args for your own needs
       env:
-        CARGO_INCREMENTAL: '0'
-        RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Zno-landing-pads'    
+        CARGO_INCREMENTAL: "0"
+        RUSTFLAGS: "-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort"
+        RUSTDOCFLAGS: "-Cpanic=abort"
     ```
-
-    Note that `-Clink-dead-code` flag might be broken for macOS environments,
-    see [#63047](https://github.com/rust-lang/rust/issues/63047)
 
 4. Add the `actions-rs@grcov` Action to the workflow.
 
     ```yaml
-    - id: coverage  
-      uses: actions-rs/grcov@v0.2
-      with:
-        args: >
-          --filter covered
-          --output-type lcov
-          --output-file ./target/lcov.info
-          --prefix-dir /home/user/build/
-          --branch
-          --ignore-not-existing
-          --llvm
-          ./target/debug
+      # TODO: This step is temporary using `0.2-proto` version!
+      # After the proper `v0.2` release, `0.2-proto` version will be removed
+      # and it will break your CI; you should understand that before copying it.
+      - id: coverage
+        uses: actions-rs/grcov@0.2-proto
+        with:
+          args: >
+            -t lcov
+            --llvm
+            --branch
+            --ignore-not-existing
+            --ignore "/*"
+            -o ./target/lcov.info
+            ./target/debug/  # Note that you need to point grcov to the target directory with build artifacts
     ```
+   
+   Refer to [`grcov` documentation](https://github.com/mozilla/grcov#man-grcov)
+   to see all available flags, options and arguments.
+   Note that some arguments are populated by this Action for you,
+   refer to [Inputs](#inputs) section for more details.
 
-5. After the successful execution, `actions-rs@grcov`
-    will set an Action output called `report`
+5. After the successful execution, `actions-rs/grcov` Action
+    will set an [output](https://help.github.com/en/actions/building-actions/metadata-syntax-for-github-actions#outputs) called `output-path`
     with an absolute path to the coverage report file
     or directory (depending on the `--output-type` argument).
 
@@ -124,24 +139,24 @@ jobs:
 
 | Name   | Required | Description                                                                      | Type   | Default |
 | ------ | :------: | -------------------------------------------------------------------------------- | ------ | --------|
-| `args` |          | [grcov flags, options and arguments](https://github.com/mozilla/grcov#man-grcov) | string |         |
+| `args` |          | [`grcov` flags, options and arguments](https://github.com/mozilla/grcov#man-grcov) | string |         |
 
 The following options are automatically populated from the
 [default environment variables](https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables)
 and passed to `grcov`.\
 If required, they can be overridden manually via the `args` input.
 
-| Name              | Default value                     |
-| ----------------- | --------------------------------- |
-| `--source-dir`    | `GITHUB_WORKSPACE`                |
-| `--commit-sha`    | `GITHUB_SHA`                      |
-| `--service-name`  | `GITHUB_WORKFLOW`                 |
-| `-service-job-id` | `GITHUB_RUN_ID`                   |
-| `--output-file`   | Depends on `--output-type` option |
+| Name                  | Default value                     |
+| --------------------- | --------------------------------- |
+| `-s`, `--source-dir`  | `$GITHUB_WORKSPACE`               |
+| `--commit-sha`        | `$GITHUB_SHA`                     |
+| `--service-name`      | `$GITHUB_WORKFLOW`                |
+| `-service-job-id`     | `$GITHUB_RUN_ID`                  |
+| `-o`, `--output-path` | Depends on `--output-type` option |
 
 ## Outputs
 
-* `report`: Absolute path to the report file or directory
+* `output-path`: Absolute path to the report file or directory
 
 ## Notes
 
@@ -153,7 +168,7 @@ If required, they can be overridden manually via the `args` input.
     which might not be accessible by the Docker-based Actions,
     such as [codecov](https://github.com/marketplace/actions/codecov).\
     Consider either mount it as [a Docker volume](https://help.github.com/en/articles/workflow-syntax-for-github-actions#jobsjob_idcontainervolumes)
-    or use the `output-file` option in the [config](#config)
+    or use the `output-path` option in the [config](#config)
     to store report in the path accessible by container.
 
 ## License

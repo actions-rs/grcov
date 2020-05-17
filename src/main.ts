@@ -9,7 +9,7 @@ async function run(): Promise<void> {
     const exe = await grcov.Grcov.get();
     await exe.call(config.args);
 
-    core.setOutput("report", config.outputPath);
+    core.setOutput("output-path", config.outputPath);
 }
 
 async function main(): Promise<void> {

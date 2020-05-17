@@ -68,14 +68,15 @@ export function getConfig(): Configuration {
     for (const [idx, arg] of args.entries()) {
         switch (arg) {
             case "-o":
-            case "--output-file":
+            case "--output-file": // support old `grcov` parameter
+            case "--output-path":
                 missing.outputFile = false;
                 // Pretty naive, but for a start let's assume that
                 // arguments array is formed properly and next argument
                 // is really there
                 outputFile = args[idx + 1];
                 if (outputFile === undefined) {
-                    throw new Error("--output-file parameter is missing");
+                    throw new Error("--output-path parameter is missing");
                 }
                 break;
 
@@ -113,7 +114,7 @@ export function getConfig(): Configuration {
         outputFile = getResultPath(outputType);
 
         core.info(
-            `--output-file parameter is missing, coverage data will be stored at ${outputFile}`
+            `--output-path parameter is missing, coverage data will be stored at "${outputFile}"`
         );
         args.unshift("--output-file", outputFile);
     }
@@ -121,25 +122,25 @@ export function getConfig(): Configuration {
     if (missing.commitSha) {
         const sha = getEnv("GITHUB_SHA");
 
-        core.info(`--commit-sha parameter is missing, set to ${sha}`);
+        core.info(`--commit-sha parameter is missing, set to "${sha}"`);
         args.unshift("--commit-sha", sha);
     }
     if (missing.serviceName) {
         const workflow = getEnv("GITHUB_WORKFLOW");
 
-        core.info(`--service-name parameter is missing, set to ${workflow}`);
+        core.info(`--service-name parameter is missing, set to "${workflow}"`);
         args.unshift("--service-name", workflow);
     }
     if (missing.serviceJobId) {
         const jobId = getEnv("GITHUB_RUN_ID");
 
-        core.info(`--service-job-id parameter is missing, set to ${jobId}`);
+        core.info(`--service-job-id parameter is missing, set to "${jobId}"`);
         args.unshift("--service-job-id", jobId);
     }
     if (missing.sourceDir) {
         const workspace = getEnv("GITHUB_WORKSPACE");
 
-        core.info(`--source-dir parameter is missing, set to ${workspace}`);
+        core.info(`--source-dir parameter is missing, set to "${workspace}"`);
         args.unshift("--source-dir", workspace);
     }
 
