@@ -30,6 +30,7 @@ jobs:
         env:
           CARGO_INCREMENTAL: '0'
           RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
+          RUSTDOCFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
       - uses: actions-rs/grcov@v0.1
 ```
 
@@ -59,7 +60,7 @@ jobs:
 3. Create a configuration file for `grcov`, see [config section](#config) for details.
 
 4. Execute the `cargo test` command.
-    It is required to add `CARGO_INCREMENTAL` and `RUSTFLAGS` environment variables
+    It is required to add `CARGO_INCREMENTAL`, `RUSTFLAGS` and `RUSTDOCFLAGS` environment variables
     for this command, see [grcov](https://github.com/mozilla/grcov) page for details.
 
     ```yaml
@@ -70,6 +71,7 @@ jobs:
       env:
         CARGO_INCREMENTAL: '0'
         RUSTFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
+        RUSTDOCFLAGS: '-Zprofile -Ccodegen-units=1 -Cinline-threshold=0 -Clink-dead-code -Coverflow-checks=off -Cpanic=abort -Zpanic_abort_tests'
     ```
 
     Note that `-Clink-dead-code` flag might be broken for macOS environments,
