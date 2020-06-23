@@ -5,6 +5,8 @@ import * as core from '@actions/core';
 import * as io from '@actions/io';
 import * as exec from '@actions/exec';
 import {Cargo} from '@actions-rs/core';
+const { Octokit } = require("@octokit/action");
+const tc = require('@actions/tool-cache');
 
 import * as configuration from './configuration';
 
@@ -13,6 +15,60 @@ export class Grcov {
 
     private constructor(path: string) {
         this.path = path;
+    }
+
+    static async install(): Promise<void> {
+        try {
+            core.startGroup('Install grcov (from releases)');
+            if (process.env.GITHUB_TOKEN === undefined) {
+                core.warning("Define GITHUB_TOKEN into the step environment to have access to the published releases. Adding `env: { GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} }` to your step is usually enough")
+                throw "env.GITHUB_TOKEN not defined";
+            }
+            const data = await new Octokit().graphql(`
+                {
+                  repository(owner: "mozilla", name: "grcov") {
+                    releases(last: 1) {
+                      edges {
+                        node {
+                          releaseAssets(name: "grcov-linux-x86_64.tar.bz2", last: 1) {
+                            edges {
+                              node {
+                                downloadUrl,
+                                release {
+                                  tagName
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+            `);
+            const tagName = data.repository.releases.edges[0].node.releaseAssets.edges[0].node.release.tagName;
+            const downloadUrl = data.repository.releases.edges[0].node.releaseAssets.edges[0].node.downloadUrl;
+            core.info("Installing grcov (" + tagName + ") from " + downloadUrl);
+            const grcovTarBz2Path = await tc.downloadTool(downloadUrl);
+            const grcovTarBz2ExtractedFolder = await tc.extractTar(grcovTarBz2Path, process.env.RUNNER_TEMP, "xj");
+            core.addPath(grcovTarBz2ExtractedFolder);
+            return ;
+        } catch (error) {
+            console.log(error);
+            core.error(error);
+        } finally {
+            core.endGroup();
+        }
+
+        const cargo = await Cargo.get();
+        try {
+            core.startGroup('Install grcov (from sources)');
+            await cargo.call(['install', 'grcov']);
+        } catch (error) {
+            throw error;
+        } finally {
+            core.endGroup();
+        }
     }
 
     public static async get(): Promise<Grcov> {
@@ -24,19 +80,16 @@ export class Grcov {
             core.info('grcov is not installed, installing now');
         }
 
-        const cargo = await Cargo.get();
-        try {
-            core.startGroup('Install grcov');
-            await cargo.call(['install', 'grcov']);
-        } catch (error) {
-            throw error;
-        } finally {
-            core.endGroup();
-        }
+        await Grcov.install();
 
         // Expecting it to be in PATH already
-        return new Grcov('grcov');
+        const grcovInstance = new Grcov('grcov');
+
+        await exec.exec(grcovInstance.path, ['--version']);
+
+        return grcovInstance;
     }
+
 
     public async call(config: configuration.Config, archive: string): Promise<string> {
 	    const postfix = Math.random().toString(36).substring(2, 15)
