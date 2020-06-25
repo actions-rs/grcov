@@ -16,6 +16,7 @@ async function run() {
     }
 
     const exe = await grcov.Grcov.get();
+    console.log(exe);
     const outputPath = await exe.call(config, coverageArchive);
 
     core.setOutput('report', outputPath);
