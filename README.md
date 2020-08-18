@@ -143,6 +143,12 @@ ignore:
 path-mapping:
   - "/path1"
   - "/path2"
+excl-br-line: "#\[(derive(.*)\]"
+excl-br-start: "#\[test\]"
+excl-br-stop: "cov:excl-br-stop"
+excl-line: "cov:excl-line"
+excl-start: "mod test"
+excl-stop: "cov:excl-stop"
 ```
 
 ## Notes

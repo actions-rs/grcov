@@ -32,6 +32,12 @@ export interface User {
     pathMapping?: string[],
     prefixDir?: string,
     outputPath?: string,
+    exclBrLine?: string,
+    exclBrStart?: string,
+    exclBrStop?: string,
+    exclLine?: string,
+    exclStart?: string,
+    exclStop?: string,
 }
 
 /**
@@ -124,6 +130,24 @@ async function loadUser(path: string): Promise<User> {
     }
     if (contents['prefix-dir']) {
         user.prefixDir = contents['prefix-dir'];
+    }
+    if (contents['excl-br-line']) {
+        user.exclBrLine = contents['excl-br-line'];
+    }
+    if (contents['excl-br-start']) {
+        user.exclBrStart = contents['excl-br-start'];
+    }
+    if (contents['excl-br-stop']) {
+        user.exclBrStop = contents['excl-br-stop'];
+    }
+    if (contents['excl-line']) {
+        user.exclLine = contents['excl-line'];
+    }
+    if (contents['excl-start']) {
+        user.exclStart = contents['excl-start'];
+    }
+    if (contents['excl-stop']) {
+        user.exclStop = contents['excl-stop'];
     }
     if (contents['output-path']) {
         user.outputPath = contents['output-path'];
