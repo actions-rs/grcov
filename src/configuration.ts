@@ -32,12 +32,12 @@ export interface User {
     pathMapping?: string[],
     prefixDir?: string,
     outputPath?: string,
-    excl_br_line?: string,
-    excl_br_start?: string,
-    excl_br_stop?: string,
-    excl_line?: string,
-    excl_start?: string,
-    excl_stop?: string,
+    exclBrLine?: string,
+    exclBrStart?: string,
+    exclBrStop?: string,
+    exclLine?: string,
+    exclStart?: string,
+    exclStop?: string,
 }
 
 /**
@@ -132,22 +132,22 @@ async function loadUser(path: string): Promise<User> {
         user.prefixDir = contents['prefix-dir'];
     }
     if (contents['excl-br-line']) {
-        user.excl_br_line = contents['excl-br-line'];
+        user.exclBrLine = contents['excl-br-line'];
     }
     if (contents['excl-br-start']) {
-        user.excl_br_start = contents['excl-br-start'];
+        user.exclBrStart = contents['excl-br-start'];
     }
     if (contents['excl-br-stop']) {
-        user.excl_br_stop = contents['excl-br-stop'];
+        user.exclBrStop = contents['excl-br-stop'];
     }
     if (contents['excl-line']) {
-        user.excl_line = contents['excl-line'];
+        user.exclLine = contents['excl-line'];
     }
     if (contents['excl-start']) {
-        user.excl_start = contents['excl-start'];
+        user.exclStart = contents['excl-start'];
     }
     if (contents['excl-stop']) {
-        user.excl_stop = contents['excl-stop'];
+        user.exclStop = contents['excl-stop'];
     }
     if (contents['output-path']) {
         user.outputPath = contents['output-path'];
