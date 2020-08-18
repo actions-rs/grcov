@@ -111,6 +111,36 @@ export class Grcov {
             args.push(config.user.prefixDir);
         }
 
+        if (config.user.excl_br_line) {
+            args.push('--excl-br-line');
+            args.push(config.user.excl_br_line);
+        }
+
+        if (config.user.excl_br_start) {
+            args.push('--excl-br-start');
+            args.push(config.user.excl_br_start);
+        }
+
+        if (config.user.excl_br_stop) {
+            args.push('--excl-br-stop');
+            args.push(config.user.excl_br_stop);
+        }
+
+        if (config.user.excl_line) {
+            args.push('--excl-line');
+            args.push(config.user.excl_line);
+        }
+
+        if (config.user.excl_start) {
+            args.push('--excl-start');
+            args.push(config.user.excl_start);
+        }
+
+        if (config.user.excl_stop) {
+            args.push('--excl-stop');
+            args.push(config.user.excl_stop);
+        }
+
         // TODO:
         // args.push('--service-job-number');
         // args.push('');
