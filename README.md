@@ -15,7 +15,7 @@ on: [push]
 name: Code Coverage
 
 jobs:
-  lint:
+  coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
