@@ -86,7 +86,7 @@ jobs:
 
 6. After the successful execution, `actions-rs@grcov`
     will set an Action output called `report`
-    with an absolute path to the coverage report file.
+    with an absolute path to the coverage report file under `/tmp`.
 
     This file can be uploaded to any code coverage service,
     ex. with [codecov](https://github.com/marketplace/actions/codecov) or [coveralls](https://github.com/marketplace/actions/coveralls-github-action) Actions help:
@@ -97,6 +97,32 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: ${{ steps.coverage.outputs.report }}
+    ```
+
+    If the upload action uses a docker image, ex. [deepsource](https://github.com/deepsourcelabs/test-coverage-action)
+    the report in `/tmp` wont be mapped into the action, so an extra
+    step is needed.
+
+
+    ```yaml
+    - name: Move coverage file into workspace
+      run: mv ${{ steps.coverage.outputs.report }} ./coverage.xml
+
+    - name: Upload test coverage to DeepSource
+      uses: deepsourcelabs/test-coverage-action@master
+      with:
+        key: rust
+        coverage-file: coverage.xml
+        dsn: ${{ secrets.DEEPSOURCE_DSN }}
+        fail-ci-on-error: true
+    ```
+
+    Note: DeepSource GitHub action depends on the checkout action, usually at the start
+    of the job, uses the `HEAD` sha instead of the default "merge" sha:
+    ```yaml
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     ```
 
 ## Inputs
