@@ -23,7 +23,7 @@ jobs:
         with:
           toolchain: nightly
           override: true
-      - uses: actions-rs/cargo@v1
+      - uses: actions-rs/cargo@v0.1
         with:
           command: test
           args: --all-features --no-fail-fast
